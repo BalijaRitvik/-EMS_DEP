@@ -34,19 +34,19 @@ const CreateOrganizationForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        // If there is any session data passed through state, update the form values
-        const { email: newEmail = '', price: newPrice = 0, duration: newDuration = 0 } = location.state || {};
-        if (newEmail !== organization.mail || newPrice !== organization.price || newDuration !== organization.duration) {
-            setOrganizationState((prev) => ({
-                ...prev,
-                mail: newEmail,
-                price: newPrice,
-                duration: newDuration,
-            }));
-            console.log('Updated organization state:', { mail: newEmail, price: newPrice, duration: newDuration });
-        }
-    }, [location.state]);
+    // useEffect(() => {
+    //     // If there is any session data passed through state, update the form values
+    //     const { email: newEmail = '', price: newPrice = 0, duration: newDuration = 0 } = location.state || {};
+    //     if (newEmail !== organization.mail || newPrice !== organization.price || newDuration !== organization.duration) {
+    //         setOrganizationState((prev) => ({
+    //             ...prev,
+    //             mail: newEmail,
+    //             price: newPrice,
+    //             duration: newDuration,
+    //         }));
+    //         console.log('Updated organization state:', { mail: newEmail, price: newPrice, duration: newDuration });
+    //     }
+    // }, [location.state]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
