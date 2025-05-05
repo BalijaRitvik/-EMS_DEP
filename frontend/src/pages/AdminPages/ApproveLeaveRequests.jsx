@@ -160,7 +160,7 @@ const ApproveLeaveRequests = () => {
         if (!adminId) {
             console.log("Navigating to login due to missing adminId");
             toast.error("Invalid or missing admin ID. Please log in again.");
-        
+            navigate("/");
             return;
         }
     }, [adminId, navigate]);

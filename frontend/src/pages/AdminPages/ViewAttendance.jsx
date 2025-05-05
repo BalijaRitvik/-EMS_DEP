@@ -149,7 +149,7 @@ const ViewAttendance = () => {
     if (!adminId || !organizationId) {
       console.log("Navigating to login due to missing adminId or organizationId");
       toast.error("Invalid or missing admin ID or organization ID. Please log in again.");
-      navigate('/login');
+      navigate('/');
       return;
     }
   }, [adminId, organizationId, navigate]);
