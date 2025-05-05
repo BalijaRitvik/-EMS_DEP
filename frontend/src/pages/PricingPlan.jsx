@@ -11,16 +11,18 @@ const PricingPlan = () => {
   const handleCheckout = async (planType) => {
     setLoading(true);
     const stripe = await stripePromise;
-
+  
     try {
       const response = await fetch(`${AUTH_API_ENDPOINT}/stripe/create-checkout-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: planType, email }),
       });
-
+  
       const session = await response.json();
-
+  
+      console.log(session); // Log the session object for better debugging
+  
       if (session.id) {
         const result = await stripe.redirectToCheckout({ sessionId: session.id });
         if (result.error) alert(result.error.message);
@@ -34,6 +36,7 @@ const PricingPlan = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 py-16 px-4 font-sans">
