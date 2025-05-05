@@ -34,23 +34,16 @@ const CreateOrganizationForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef(null);
 
-    // useEffect(() => {
-    //     // If there is any session data passed through state, update the form values
-    //     const { email: newEmail = '', price: newPrice = 0, duration: newDuration = 0 } = location.state || {};
-    //     if (newEmail !== organization.mail || newPrice !== organization.price || newDuration !== organization.duration) {
-    //         setOrganizationState((prev) => ({
-    //             ...prev,
-    //             mail: newEmail,
-    //             price: newPrice,
-    //             duration: newDuration,
-    //         }));
-    //         console.log('Updated organization state:', { mail: newEmail, price: newPrice, duration: newDuration });
-    //     }
-    // }, [location.state]);
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name !== 'mail') { // Prevent changes to mail field
+
+        if (name === 'mail') {
+            setOrganizationState((prev) => ({
+                ...prev,
+                mail: value,
+            }));
+            validateField(name, value);  // Validate email immediately when changed
+        } else {
             setOrganizationState((prev) => ({
                 ...prev,
                 [name]: value,
@@ -101,7 +94,7 @@ const CreateOrganizationForm = () => {
         if (name === 'organization_name') {
             errors.organization_name = value.trim() === '' ? 'Organization name is required' : '';
         } else if (name === 'mail') {
-            errors.mail = !EMAIL_REGEX.test(organization.mail) ? 'Invalid email address' : '';
+            errors.mail = !EMAIL_REGEX.test(value) ? 'Invalid email address' : '';
         } else if (name === 'adminname') {
             errors.adminname = value.trim() === '' ? 'Admin name is required' : '';
         } else if (name === 'departments') {
@@ -228,7 +221,6 @@ const CreateOrganizationForm = () => {
                             placeholder="Email"
                             className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-
                         {validationErrors.mail && <p className="text-red-500 text-sm">{validationErrors.mail}</p>}
 
                         <input
@@ -301,7 +293,7 @@ const CreateOrganizationForm = () => {
                     </form>
                 </div>
                 <div className="w-full md:w-1/2 bg-gray-200 p-6 flex items-center justify-center">
-                    <img src={register} alt="Register" className="max-w-full h-auto" />
+                    <img src={register} alt="Register" className="max-w-full h-auto rounded-lg" />
                 </div>
             </div>
         </div>
