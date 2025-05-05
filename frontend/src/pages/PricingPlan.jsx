@@ -11,22 +11,23 @@ const PricingPlan = () => {
   const handleCheckout = async (planType) => {
     setLoading(true);
     const stripe = await stripePromise;
-  
+
     try {
       const response = await fetch(`${AUTH_API_ENDPOINT}/stripe/create-checkout-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: planType, email }),
       });
-  
-      const session = await response.json();
-  
-      console.log(session); // Log the session object for better debugging
-  
-      if (session.id) {
-        const result = await stripe.redirectToCheckout({ sessionId: session.id });
-        if (result.error) alert(result.error.message);
+
+      const result = await response.json();
+      
+      console.log(result); // Log the response for better debugging
+
+      if (result.status === 'success') {
+        // Redirect to success page if the session was created successfully
+        window.location.href = `${process.env.VITE_FRONTEND_URLS}/create-organization?payment=success`;
       } else {
+        // If something went wrong, notify the user
         alert('Unable to initiate checkout. Try again later.');
       }
     } catch (error) {
@@ -36,7 +37,6 @@ const PricingPlan = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-50 to-blue-100 py-16 px-4 font-sans">
@@ -58,7 +58,7 @@ const PricingPlan = () => {
       <div className="flex gap-8 flex-wrap justify-center">
         {[
           { label: '6-Month Plan', desc: 'Full access for half a year.', amount: '₹12,000', key: '6month' },
-          { label: '12-Month Plan', desc: 'Best value with priority support.', amount: '₹20,000', key: '12month' }
+          { label: '12-Month Plan', desc: 'Best value with priority support.', amount: '₹20,000', key: '12month' },
         ].map((plan) => (
           <div key={plan.key} className="bg-white p-6 rounded-xl shadow-lg w-full sm:w-72 text-center mb-8">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">{plan.label}</h2>

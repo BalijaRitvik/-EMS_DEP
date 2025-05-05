@@ -83,15 +83,20 @@ export const checkout = async (req, res) => {
         },
         quantity: 1,
       }],
-      success_url: `${process.env.FRONTENDURL}/create-organization?payment=success&sessionId={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.FRONTENDURL}/create-organization?payment=success`,
       cancel_url: `${process.env.FRONTENDURL}/create-organization?payment=cancel`,
     });
-    res.json({ id: session.id });
+
+    // Send a simple response indicating success or failure
+    res.json({ status: 'success' });
+
   } catch (error) {
     console.error('Stripe checkout error:', error);
     res.status(500).json({ error: 'Stripe session creation failed' });
   }
 };
+
+
 
 
 /**
