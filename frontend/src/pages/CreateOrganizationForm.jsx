@@ -10,21 +10,16 @@ const CreateOrganizationForm = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Extract sessionId from URL query parameters and state from navigation
-    const queryParams = new URLSearchParams(location.search);
-    const sessionId = queryParams.get('sessionId') || '';
-    const { email: initialEmail = '', price: initialPrice = 0, duration: initialDuration = 0 } = location.state || {};
-
     const [organization, setOrganizationState] = useState({
         organization_name: "",
-        mail: initialEmail,
+        mail: "",
         adminname: "",
         adminDepartment: "",
         departments: [""],
         organizationLogo: null,
         employeeStatus: "Admin",
-        price: initialPrice,
-        duration: initialDuration,
+        price: 0,  // Default value, or you can set it to whatever is appropriate
+        duration: 0, // Default value, or adjust based on requirements
     });
 
     const [validationErrors, setValidationErrors] = useState({
@@ -39,38 +34,8 @@ const CreateOrganizationForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const fileInputRef = useRef(null);
 
-    // Fetch email, price, and duration from session if not in state
     useEffect(() => {
-        const fetchSessionDetails = async () => {
-            if (!sessionId || initialEmail) return; // Skip if already fetched or state is present
-            console.log('Fetching session details for sessionId:', sessionId);
-
-            try {
-                const response = await fetch(`${AUTH_API_ENDPOINT}/stripe/session?sessionId=${sessionId}`);
-                const data = await response.json();
-                console.log('Session details response:', data);
-
-                if (response.ok && data.email) {
-                    console.log('Navigating with state:', { email: data.email, price: data.price, duration: data.duration });
-                    // Navigate again to the same route with state
-                    navigate('/create-organization', {
-                        state: { email: data.email, price: data.price, duration: data.duration },
-                        replace: true,
-                    });
-                } else {
-                    toast.error("Failed to retrieve payment details: " + (data.error || 'Unknown error'));
-                }
-            } catch (error) {
-                console.error("Error fetching session details:", error);
-                toast.error("Error retrieving payment details: " + error.message);
-            }
-        };
-
-        fetchSessionDetails();
-    }, [sessionId, initialEmail, navigate]);
-
-    // Update state when location.state changes (e.g., after navigation)
-    useEffect(() => {
+        // If there is any session data passed through state, update the form values
         const { email: newEmail = '', price: newPrice = 0, duration: newDuration = 0 } = location.state || {};
         if (newEmail !== organization.mail || newPrice !== organization.price || newDuration !== organization.duration) {
             setOrganizationState((prev) => ({
@@ -197,8 +162,8 @@ const CreateOrganizationForm = () => {
         formData.append('departments', JSON.stringify(organization.departments));
         formData.append('employeeStatus', organization.employeeStatus);
         formData.append('organizationLogo', organization.organizationLogo);
-        formData.append('price', organization.price);
-        formData.append('duration', organization.duration);
+        formData.append('price', organization.price);  // Retain price
+        formData.append('duration', organization.duration);  // Retain duration
 
         try {
             const response = await fetch(`${AUTH_API_ENDPOINT}/register`, {
@@ -296,59 +261,47 @@ const CreateOrganizationForm = () => {
                             <button
                                 type="button"
                                 onClick={addDepartment}
-                                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                className="bg-blue-500 text-white rounded py-2 px-4 w-full"
                             >
                                 Add Department
                             </button>
                         )}
 
-                        <select
+                        <input
+                            type="text"
                             name="adminDepartment"
                             value={organization.adminDepartment}
                             onChange={handleInputChange}
+                            placeholder="Admin Department"
                             className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                        >
-                            <option value="">Select Admin Department</option>
-                            {organization.departments.map((dept, index) => (
-                                <option key={index} value={dept}>{dept}</option>
-                            ))}
-                        </select>
+                        />
                         {validationErrors.adminDepartment && (
                             <p className="text-red-500 text-sm">{validationErrors.adminDepartment}</p>
                         )}
 
                         <input
+                            ref={fileInputRef}
                             type="file"
                             name="organizationLogo"
-                            ref={fileInputRef}
                             onChange={handleFileChange}
-                            className="w-full border border-gray-300 rounded px-4 py-2"
+                            accept="image/*"
+                            className="w-full text-sm text-gray-700"
                         />
                         {validationErrors.organizationLogo && (
                             <p className="text-red-500 text-sm">{validationErrors.organizationLogo}</p>
                         )}
 
-                        {organization.organizationLogo && (
-                            <img
-                                src={URL.createObjectURL(organization.organizationLogo)}
-                                alt="Preview"
-                                className="w-32 h-32 object-cover mt-2 rounded border"
-                            />
-                        )}
-
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`${
-                                isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-500 hover:bg-green-600'
-                            } text-white px-4 py-2 rounded`}
+                            className={`w-full py-2 px-4 rounded bg-blue-500 text-white focus:outline-none ${isSubmitting ? 'bg-blue-300' : ''}`}
                         >
-                            {isSubmitting ? 'Registering...' : 'Register'}
+                            {isSubmitting ? "Submitting..." : "Create Organization"}
                         </button>
                     </form>
                 </div>
-                <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6">
-                    <img src={register} alt="Register" className="max-h-96 object-contain" />
+                <div className="w-full md:w-1/2 bg-gray-200 p-6 flex items-center justify-center">
+                    <img src={register} alt="Register" className="max-w-full h-auto" />
                 </div>
             </div>
         </div>
