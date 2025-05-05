@@ -544,6 +544,7 @@ export const promoteemployee = async (req, res) => {
       subject: 'Promotion to Manager',
       html: `<h3>Congratulations ${employee.empname}!</h3><p>Your code: ${admincode}</p>`,
     });
+    await employee.save();
 
     return res.status(200).json({
       success: true,
