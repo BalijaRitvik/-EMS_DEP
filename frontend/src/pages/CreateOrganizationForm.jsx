@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useRef } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import register from '../assets/Images/register.png';
 import toast from "react-hot-toast";
 import { AUTH_API_ENDPOINT } from '../utils/constant';
@@ -9,7 +9,7 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const CreateOrganizationForm = () => {
     const navigate = useNavigate();
-    const location = useLocation();
+    const fileInputRef = useRef(null);
 
     const [organization, setOrganizationState] = useState({
         organization_name: "",
@@ -19,48 +19,24 @@ const CreateOrganizationForm = () => {
         departments: [""],
         organizationLogo: null,
         employeeStatus: "Admin",
-        price: 0,  // Default value, or you can set it to whatever is appropriate
-        duration: 0, // Default value, or adjust based on requirements
+        price: 0,
+        duration: 0,
     });
 
-    const [validationErrors, setValidationErrors] = useState({
-        organization_name: '',
-        mail: '',
-        adminname: '',
-        adminDepartment: '',
-        departments: '',
-        organizationLogo: '',
-    });
-
+    const [validationErrors, setValidationErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const fileInputRef = useRef(null);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-
-        if (name === 'mail') {
-            setOrganizationState((prev) => ({
-                ...prev,
-                mail: value,
-            }));
-            validateField(name, value);  // Validate email immediately when changed
-        } else {
-            setOrganizationState((prev) => ({
-                ...prev,
-                [name]: value,
-            }));
-            validateField(name, value);
-        }
+        setOrganizationState(prev => ({ ...prev, [name]: value }));
+        validateField(name, value);
     };
 
     const handleDepartmentChange = (index, value) => {
-        const updatedDepartments = [...organization.departments];
-        updatedDepartments[index] = value;
-        setOrganizationState((prev) => ({
-            ...prev,
-            departments: updatedDepartments,
-        }));
-        validateField('departments', updatedDepartments);
+        const updated = [...organization.departments];
+        updated[index] = value;
+        setOrganizationState(prev => ({ ...prev, departments: updated }));
+        validateField('departments', updated);
     };
 
     const handleSingleDepartmentChange = (index) => (e) => {
@@ -69,72 +45,80 @@ const CreateOrganizationForm = () => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        setOrganizationState((prev) => ({
-            ...prev,
-            organizationLogo: file,
-        }));
+        setOrganizationState(prev => ({ ...prev, organizationLogo: file }));
         validateField('organizationLogo', file);
     };
 
     const addDepartment = () => {
         if (organization.departments.length < 5) {
-            setOrganizationState((prev) => ({
+            setOrganizationState(prev => ({
                 ...prev,
-                departments: [...prev.departments, ""],
+                departments: [...prev.departments, ""]
             }));
         } else {
-            setValidationErrors((prev) => ({
+            setValidationErrors(prev => ({
                 ...prev,
-                departments: 'Maximum 5 departments allowed',
+                departments: "Maximum 5 departments allowed"
             }));
         }
     };
 
     const validateField = (name, value) => {
         const errors = { ...validationErrors };
-        if (name === 'organization_name') {
-            errors.organization_name = value.trim() === '' ? 'Organization name is required' : '';
-        } else if (name === 'mail') {
-            errors.mail = !EMAIL_REGEX.test(value) ? 'Invalid email address' : '';
-        } else if (name === 'adminname') {
-            errors.adminname = value.trim() === '' ? 'Admin name is required' : '';
-        } else if (name === 'departments') {
-            errors.departments = value.some((dept) => dept.trim() === '') ? 'Department names cannot be empty' : '';
-        } else if (name === 'adminDepartment') {
-            errors.adminDepartment = value.trim() === '' ? 'Admin department is required' : '';
-        } else if (name === 'organizationLogo') {
-            errors.organizationLogo = value ? '' : 'Organization logo is required';
+
+        switch (name) {
+            case "organization_name":
+                errors.organization_name = value.trim() === '' ? "Organization name is required" : '';
+                break;
+            case "mail":
+                errors.mail = !EMAIL_REGEX.test(value) ? "Invalid email address" : '';
+                break;
+            case "adminname":
+                errors.adminname = value.trim() === '' ? "Admin name is required" : '';
+                break;
+            case "departments":
+                errors.departments = value.some(v => v.trim() === '') ? "Department names cannot be empty" : '';
+                break;
+            case "adminDepartment":
+                errors.adminDepartment = value.trim() === '' ? "Admin department is required" : '';
+                break;
+            case "organizationLogo":
+                errors.organizationLogo = !value ? "Organization logo is required" : '';
+                break;
+            default:
+                break;
         }
+
         setValidationErrors(errors);
     };
 
     const validateForm = () => {
         const { organization_name, mail, adminname, departments, adminDepartment, organizationLogo } = organization;
-        let valid = true;
         const errors = {};
+        let valid = true;
 
-        if (organization_name.trim() === '') {
-            errors.organization_name = 'Organization name is mandatory';
+        if (!organization_name.trim()) {
+            errors.organization_name = "Organization name is mandatory";
             valid = false;
         }
         if (!EMAIL_REGEX.test(mail)) {
-            errors.mail = 'Invalid email address';
+            errors.mail = "Invalid email address";
             valid = false;
         }
-        if (adminname.trim() === '') {
-            errors.adminname = 'Admin name is required';
+        if (!adminname.trim()) {
+            errors.adminname = "Admin name is required";
             valid = false;
         }
-        if (departments.some((dept) => dept.trim() === '')) {
-            errors.departments = 'Department names cannot be empty';
+        if (departments.some(dept => dept.trim() === '')) {
+            errors.departments = "Department names cannot be empty";
             valid = false;
         }
-        if (adminDepartment.trim() === '') {
-            errors.adminDepartment = 'Admin department is required';
+        if (!adminDepartment.trim()) {
+            errors.adminDepartment = "Admin department is required";
             valid = false;
         }
         if (!organizationLogo) {
-            errors.organizationLogo = 'Organization logo is required';
+            errors.organizationLogo = "Organization logo is required";
             valid = false;
         }
 
@@ -149,48 +133,41 @@ const CreateOrganizationForm = () => {
         setIsSubmitting(true);
 
         const formData = new FormData();
-        formData.append('organization_name', organization.organization_name);
-        formData.append('mail', organization.mail);
-        formData.append('adminname', organization.adminname);
-        formData.append('adminDepartment', organization.adminDepartment);
-        formData.append('departments', JSON.stringify(organization.departments));
-        formData.append('employeeStatus', organization.employeeStatus);
-        formData.append('organizationLogo', organization.organizationLogo);
-        formData.append('price', organization.price);  // Retain price
-        formData.append('duration', organization.duration);  // Retain duration
+        formData.append("organization_name", organization.organization_name);
+        formData.append("mail", organization.mail);
+        formData.append("adminname", organization.adminname);
+        formData.append("adminDepartment", organization.adminDepartment);
+        formData.append("departments", JSON.stringify(organization.departments));
+        formData.append("organizationLogo", organization.organizationLogo);
+        formData.append("employeeStatus", organization.employeeStatus);
+        formData.append("price", organization.price);
+        formData.append("duration", organization.duration);
 
         try {
-            const response = await axios.post(`${AUTH_API_ENDPOINT}/register`, {
-                method: 'POST',
-                body: formData,
+            const response = await axios.post(`${AUTH_API_ENDPOINT}/register`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data"
+                }
             });
 
-            const data = await response.json();
-
-            if (response.ok) {
-                toast.success("Organization registered successfully!");
-                setOrganizationState({
-                    organization_name: "",
-                    mail: "",
-                    adminname: "",
-                    adminDepartment: "",
-                    departments: [""],
-                    organizationLogo: null,
-                    employeeStatus: "Admin",
-                    price: 0,
-                    duration: 0,
-                });
-                navigate('/');
-                setValidationErrors({});
-                if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
-                }
-            } else {
-                toast.error(`Registration failed: ${data.error || data.message}`);
-            }
+            toast.success("Organization registered successfully!");
+            setOrganizationState({
+                organization_name: "",
+                mail: "",
+                adminname: "",
+                adminDepartment: "",
+                departments: [""],
+                organizationLogo: null,
+                employeeStatus: "Admin",
+                price: 0,
+                duration: 0,
+            });
+            setValidationErrors({});
+            if (fileInputRef.current) fileInputRef.current.value = "";
+            navigate('/');
         } catch (error) {
-            console.error("Error during registration:", error);
-            toast.error("Something went wrong. Please try again later.");
+            console.error("Registration error:", error);
+            toast.error(error.response?.data?.error || "Something went wrong");
         } finally {
             setIsSubmitting(false);
         }
@@ -208,11 +185,9 @@ const CreateOrganizationForm = () => {
                             value={organization.organization_name}
                             onChange={handleInputChange}
                             placeholder="Organization Name"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full border border-gray-300 rounded px-4 py-2"
                         />
-                        {validationErrors.organization_name && (
-                            <p className="text-red-500 text-sm">{validationErrors.organization_name}</p>
-                        )}
+                        {validationErrors.organization_name && <p className="text-red-500 text-sm">{validationErrors.organization_name}</p>}
 
                         <input
                             type="email"
@@ -220,7 +195,7 @@ const CreateOrganizationForm = () => {
                             value={organization.mail}
                             onChange={handleInputChange}
                             placeholder="Email"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full border border-gray-300 rounded px-4 py-2"
                         />
                         {validationErrors.mail && <p className="text-red-500 text-sm">{validationErrors.mail}</p>}
 
@@ -230,11 +205,9 @@ const CreateOrganizationForm = () => {
                             value={organization.adminname}
                             onChange={handleInputChange}
                             placeholder="Admin Name"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full border border-gray-300 rounded px-4 py-2"
                         />
-                        {validationErrors.adminname && (
-                            <p className="text-red-500 text-sm">{validationErrors.adminname}</p>
-                        )}
+                        {validationErrors.adminname && <p className="text-red-500 text-sm">{validationErrors.adminname}</p>}
 
                         {organization.departments.map((dept, index) => (
                             <input
@@ -243,12 +216,10 @@ const CreateOrganizationForm = () => {
                                 value={dept}
                                 onChange={handleSingleDepartmentChange(index)}
                                 placeholder={`Department ${index + 1}`}
-                                className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="w-full border border-gray-300 rounded px-4 py-2"
                             />
                         ))}
-                        {validationErrors.departments && (
-                            <p className="text-red-500 text-sm">{validationErrors.departments}</p>
-                        )}
+                        {validationErrors.departments && <p className="text-red-500 text-sm">{validationErrors.departments}</p>}
 
                         {organization.departments.length < 5 && (
                             <button
@@ -266,11 +237,9 @@ const CreateOrganizationForm = () => {
                             value={organization.adminDepartment}
                             onChange={handleInputChange}
                             placeholder="Admin Department"
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            className="w-full border border-gray-300 rounded px-4 py-2"
                         />
-                        {validationErrors.adminDepartment && (
-                            <p className="text-red-500 text-sm">{validationErrors.adminDepartment}</p>
-                        )}
+                        {validationErrors.adminDepartment && <p className="text-red-500 text-sm">{validationErrors.adminDepartment}</p>}
 
                         <input
                             ref={fileInputRef}
@@ -280,14 +249,12 @@ const CreateOrganizationForm = () => {
                             accept="image/*"
                             className="w-full text-sm text-gray-700"
                         />
-                        {validationErrors.organizationLogo && (
-                            <p className="text-red-500 text-sm">{validationErrors.organizationLogo}</p>
-                        )}
+                        {validationErrors.organizationLogo && <p className="text-red-500 text-sm">{validationErrors.organizationLogo}</p>}
 
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className={`w-full py-2 px-4 rounded bg-blue-500 text-white focus:outline-none ${isSubmitting ? 'bg-blue-300' : ''}`}
+                            className={`w-full py-2 px-4 rounded ${isSubmitting ? 'bg-blue-300' : 'bg-blue-500'} text-white`}
                         >
                             {isSubmitting ? "Submitting..." : "Create Organization"}
                         </button>
