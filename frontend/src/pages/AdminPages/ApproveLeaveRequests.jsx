@@ -149,7 +149,7 @@ const LeaveRequestTable = ({ leaveRecords, handleStatusUpdate, isManager, loadin
 
 const ApproveLeaveRequests = () => {
     const navigate = useNavigate();
-    const { employee } = useSelector((state) => state.auth.employee);
+    const { employee } = useSelector((state) => state.auth);
     const adminId = employee?._id;
     const adminRole = employee?.Employeestatus;
     const isManager = adminRole === "Manager";
@@ -160,7 +160,7 @@ const ApproveLeaveRequests = () => {
         if (!adminId) {
             console.log("Navigating to login due to missing adminId");
             toast.error("Invalid or missing admin ID. Please log in again.");
-            navigate("/login");
+        
             return;
         }
     }, [adminId, navigate]);
