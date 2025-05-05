@@ -3,6 +3,7 @@ import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import register from '../assets/Images/register.png';
 import toast from "react-hot-toast";
 import { AUTH_API_ENDPOINT } from '../utils/constant';
+import axios from 'axios';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -159,7 +160,7 @@ const CreateOrganizationForm = () => {
         formData.append('duration', organization.duration);  // Retain duration
 
         try {
-            const response = await fetch(`${AUTH_API_ENDPOINT}/register`, {
+            const response = await axios.post(`${AUTH_API_ENDPOINT}/register`, {
                 method: 'POST',
                 body: formData,
             });

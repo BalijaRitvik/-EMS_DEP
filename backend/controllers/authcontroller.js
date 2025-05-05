@@ -193,9 +193,10 @@ export const getSessionDetails = async (req, res) => {
  *         description: Internal server error
  */
 export const register = async (req, res) => {
+  console.log('Route hit');
   const { organization_name, mail, adminname, departments, adminDepartment, employeeStatus = 'Admin', price, duration } = req.body;
   const file = req.file;
-
+  
   try {
     if (!organization_name || !mail || !adminname || !adminDepartment) {
       return res.status(422).json({ error: 'Please fill all required fields properly' });
