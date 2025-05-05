@@ -226,9 +226,9 @@ const CreateOrganizationForm = () => {
                             value={organization.mail}
                             onChange={handleInputChange}
                             placeholder="Email"
-                            readOnly
-                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-100"
+                            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
+
                         {validationErrors.mail && <p className="text-red-500 text-sm">{validationErrors.mail}</p>}
 
                         <input
