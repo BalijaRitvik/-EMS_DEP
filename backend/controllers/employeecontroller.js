@@ -47,23 +47,26 @@ dotenv.config({ path: './.env' });
  *         description: Server error
  */
 export const getemployeedetails = async (req, res) => {
+  const employeeId = req.id;
   try {
-    const employee = await Employee.findById(req.id)
-      .select('_id empname mail age Employeestatus rating projectspending profilePhoto')
-      .populate({ path: 'department', select: 'name' })
-      .lean();
-
+    const employee = await Employee.findById(employeeId)
+      .select('-password')
+      .populate('department', 'name');
     if (!employee) {
       return res.status(404).json({ message: 'Employee not found', success: false });
     }
-
     const employeeData = {
-      ...employee,
+      _id: employee._id,
+      empname: employee.empname,
+      mail: employee.mail,
+      age: employee.age,
+      Employeestatus: employee.Employeestatus,
+      rating: employee.rating,
+      projectspending: employee.projectspending ?? 0,
+      profilePhoto: employee.profilePhoto,
       department: employee.department?._id,
       departmentName: employee.department?.name || 'N/A',
-      projectspending: employee.projectspending ?? 0,
     };
-
     return res.status(200).json({ message: 'Employee fetched successfully', success: true, employee: employeeData });
   } catch (error) {
     console.error('Error fetching employee:', error);
