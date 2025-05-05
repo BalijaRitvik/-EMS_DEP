@@ -133,11 +133,11 @@ const AttendanceTable = ({ employeeStatus, summary, loading, navigate, isManager
 
 const ViewAttendance = () => {
   const navigate = useNavigate();
-  const { employee } = useSelector((state) => state.auth);
+  const { employee } = useSelector((state) => state.auth.employee);
   const adminId = employee?._id;
   const adminRole = employee?.Employeestatus;
   const isManager = adminRole === "Manager";
-  const organizationId = useSelector((state) => state.auth.organization);
+  const organizationId = useSelector((state) => state.auth.employee.organization);
 
   useEffect(() => {
     console.log("adminId from state.auth:", adminId);
