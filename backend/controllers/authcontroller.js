@@ -319,8 +319,13 @@ export const login = async (req, res) => {
     if (!process.env.JWT_SECRET) return res.status(500).json({ success: false, error: 'JWT_SECRET is missing' });
 
     const token = jwt.sign({ userId: employee._id }, process.env.JWT_SECRET, { expiresIn: '1d' });
-    res.cookie('token', token, { maxAge: 24 * 60 * 60 * 1000, httpOnly: true, sameSite: 'strict' });
-
+    res.cookie('token', token, {
+      maxAge: 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'None'
+    });
+    
     // Exclude password from the response
     const employeeResponse = {
       _id: employee._id,
