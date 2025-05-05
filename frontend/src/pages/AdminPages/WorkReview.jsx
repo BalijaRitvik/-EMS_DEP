@@ -17,7 +17,7 @@ const WorkReview = () => {
     description,
   } = location.state || {};
 
-  const organization = useSelector((state) => state.auth?.organization?._id);
+  const organization = useSelector((state) => state.auth?.employee.organization);
   const employee = useSelector((state) => state.auth?.employee?._id);
 
   const [newComment, setNewComment] = useState('');
