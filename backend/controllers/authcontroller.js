@@ -83,8 +83,8 @@ export const checkout = async (req, res) => {
         },
         quantity: 1,
       }],
-      success_url: `http://localhost:5173/create-organization?payment=success&sessionId={CHECKOUT_SESSION_ID}`,
-      cancel_url: 'http://localhost:5173/create-organization?payment=cancel',
+      success_url: `${process.env.FRONTENDURL}/create-organization?payment=success&sessionId={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.FRONTENDURL}/create-organization?payment=cancel`,
     });
     res.json({ id: session.id });
   } catch (error) {
@@ -92,6 +92,7 @@ export const checkout = async (req, res) => {
     res.status(500).json({ error: 'Stripe session creation failed' });
   }
 };
+
 
 /**
  * @swagger

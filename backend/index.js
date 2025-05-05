@@ -24,9 +24,10 @@ app.use(cookieParser());
 
 // Connecting frontend and backend
 const corsOptions = {
-    origin: 'http://localhost:5173',
+    origin: process.env.FRONTENDURL,  // Use the FRONTENDURL from the .env
     credentials: true,
 };
+
 app.use(cors(corsOptions));
 app.use("/api", authroutes);
 app.use("/api/employee", employeeroutes);
