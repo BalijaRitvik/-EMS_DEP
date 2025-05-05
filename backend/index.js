@@ -4,6 +4,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectMongoDb from "./utils/db.js";
+import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swaggerOptions.js';
 
 // Import routes
 import authroutes from './routes/authroutes.js';
@@ -37,6 +40,8 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // API routes
 app.use("/api", authroutes);
