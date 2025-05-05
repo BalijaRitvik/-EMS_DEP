@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // Connecting frontend and backend
 const corsOptions = {
-    origin: process.env.FRONTENDURL,  // Use the FRONTENDURL from the .env
+    origin: process.env.FRONTEND_URL,  // Use the FRONTENDURL from the .env
     credentials: true,
 };
 
