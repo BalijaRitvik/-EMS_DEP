@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { ADMIN_API_ENDPOINT, EMPLOYEE_API_ENDPOINT } from '../../utils/constant';
+import { ADMIN_API_ENDPOINT } from '../../utils/constant';
 import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import UseGetAllEmployees from '../../hooks/UseGetAllEmployees';
@@ -9,19 +9,22 @@ import { useNavigate } from 'react-router-dom';
 const PromoteEmployee = () => {
   const { employee } = useSelector((state) => state.auth);
   const organizationId = employee?.organization;
-  const [loading, setloading] = useState(false);
-    const navigate=useNavigate()
-  const { employees: allEmployees, refetch } = UseGetAllEmployees();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { employees: allEmployees, refetch } = UseGetAllEmployees();  // refetch is available here
 
   const promote = async (empId) => {
     try {
-        setloading(true);
+      setLoading(true);
       await axios.put(`${ADMIN_API_ENDPOINT}/promote/${empId}`, {}, { withCredentials: true });
       toast.success('Employee promoted to Manager');
-      navigate(-1);
+      refetch(); // Trigger re-fetch to get the updated employee list
+      navigate(-1);  // Optionally navigate to the previous page
     } catch (error) {
       console.error(error);
       toast.error('Failed to promote employee');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,9 +55,7 @@ const PromoteEmployee = () => {
                       onClick={() => promote(emp._id)}
                       className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
                     >
-                    {
-                      loading?"Promoting...":<span>Promote</span>
-                    }
+                      {loading ? "Promoting..." : "Promote"}
                     </button>
                   ) : (
                     <span className="text-gray-500">Already Manager</span>

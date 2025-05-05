@@ -1,4 +1,3 @@
-// UseGetAllEmployees.js
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -10,27 +9,25 @@ const UseGetAllEmployees = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await axios.get(`${ADMIN_API_ENDPOINT}/getallemployees/${organizationId}`, { withCredentials: true });
-        console.log(response);
-        
-        setEmployees(response.data.employees); 
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching employees:', error);
-        setError('Failed to fetch employees');
-        setLoading(false);
-      }
-    };
+  const fetchEmployees = async () => {
+    try {
+      const response = await axios.get(`${ADMIN_API_ENDPOINT}/getallemployees/${organizationId}`, { withCredentials: true });
+      setEmployees(response.data.employees);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+      setError('Failed to fetch employees');
+      setLoading(false);
+    }
+  };
 
-    if (organizationId) { 
+  useEffect(() => {
+    if (organizationId) {
       fetchEmployees();
     }
   }, [organizationId]);
 
-  return { employees, loading, error };
+  return { employees, loading, error, refetch: fetchEmployees };
 };
 
 export default UseGetAllEmployees;
