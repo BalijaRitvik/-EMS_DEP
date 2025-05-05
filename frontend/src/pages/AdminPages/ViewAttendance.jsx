@@ -63,6 +63,10 @@ const ManagerView = ({ managerId, organizationId }) => {
     };
     if (organizationId && managerId) {
       fetchDepartmentEmployeeStatus();
+    } else {
+      console.error("Missing organizationId or managerId:", { organizationId, managerId });
+      toast.error("Missing organization ID or manager ID.");
+      setLoading(false);
     }
   }, [organizationId, managerId]);
 
@@ -133,21 +137,22 @@ const AttendanceTable = ({ employeeStatus, summary, loading, navigate, isManager
 
 const ViewAttendance = () => {
   const navigate = useNavigate();
-  const { employee } = useSelector((state) => state.auth.employee);
-  const adminId = employee?._id;
-  const adminRole = employee?.Employeestatus;
+  const { employee } = useSelector((state) => state.auth); // Access state.auth directly
+  const adminId = employee?._id; // "68193205701ea1bd4cc8ceca"
+  const adminRole = employee?.Employeestatus; // "Manager"
   const isManager = adminRole === "Manager";
-  const organizationId = useSelector((state) => state.auth.employee.organization);
+  const organizationId = employee?.organization; // "681928b45e84daa5f716809a"
 
   useEffect(() => {
     console.log("adminId from state.auth:", adminId);
-    if (!adminId) {
-      console.log("Navigating to login due to missing adminId");
-      toast.error("Invalid or missing admin ID. Please log in again.");
+    console.log("organizationId from state.auth:", organizationId);
+    if (!adminId || !organizationId) {
+      console.log("Navigating to login due to missing adminId or organizationId");
+      toast.error("Invalid or missing admin ID or organization ID. Please log in again.");
       navigate('/login');
       return;
     }
-  }, [adminId, navigate]);
+  }, [adminId, organizationId, navigate]);
 
   return (
     <>

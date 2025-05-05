@@ -276,6 +276,8 @@ export const getEmployeeLeaves = async (req, res) => {
 export const getDepartmentLeaveRequests = async (req, res) => {
   const { organizationId } = req.params;
   const managerId = req.id;
+  console.log("Manager ID:", managerId);
+  console.log("Organization ID:", organizationId);
   try {
     const manager = await Employee.findById(managerId);
     if (!manager || manager.Employeestatus !== 'Manager') {
