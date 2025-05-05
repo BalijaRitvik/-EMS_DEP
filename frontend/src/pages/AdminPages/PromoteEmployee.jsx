@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { ADMIN_API_ENDPOINT, EMPLOYEE_API_ENDPOINT } from '../../utils/constant';
 import { useSelector } from 'react-redux';
@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom';
 const PromoteEmployee = () => {
   const { employee } = useSelector((state) => state.auth);
   const organizationId = employee?.organization;
+  const [loading, setloading] = useState(false);
     const navigate=useNavigate()
   const { employees: allEmployees, refetch } = UseGetAllEmployees();
 
   const promote = async (empId) => {
     try {
-        
+        setloading(true);
       await axios.put(`${ADMIN_API_ENDPOINT}/promote/${empId}`, {}, { withCredentials: true });
       toast.success('Employee promoted to Manager');
       navigate(-1);
@@ -51,7 +52,9 @@ const PromoteEmployee = () => {
                       onClick={() => promote(emp._id)}
                       className="bg-green-500 text-white px-4 py-1 rounded hover:bg-green-600"
                     >
-                      Promote
+                    {
+                      loading?"Promoting...":<span>Promote</span>
+                    }
                     </button>
                   ) : (
                     <span className="text-gray-500">Already Manager</span>
