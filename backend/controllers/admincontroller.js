@@ -885,6 +885,8 @@ export const SuperAdminLogin = async (req, res) => {
   const { superadminmail, superadminpassword } = req.body;
   try {
     const admin = await SuperAdmin.findOne({ superadminmail }).lean();
+    console.log(superadminmail, superadminpassword);
+    
     if (!admin || superadminpassword !== admin.superadminpassword) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
