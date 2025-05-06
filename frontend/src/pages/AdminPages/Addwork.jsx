@@ -253,17 +253,17 @@ const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) =
                 )}
               </div>
             </div>
+            {employee.Employeestatus !== 'Admin' && employee._id !== adminId && (
+              <button
+                onClick={() => openModal(employee._id)}
+                className="py-2 px-4 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition-all flex items-center space-x-2"
+              >
+                <span>➕</span>
+                <span>Assign Task</span>
+              </button>
+            )}
           </div>
         ))
-      )}
-      {employees.length > 0 && (
-        <button
-          onClick={() => openModal(employees[0]._id)}
-          className="w-full py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition-all flex items-center justify-center space-x-2"
-        >
-          <span>➕</span>
-          <span>Assign New Task</span>
-        </button>
       )}
     </div>
   </div>
