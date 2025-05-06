@@ -153,7 +153,7 @@ const Home = () => {
             </p>
           </div>
           <div className="flex justify-center gap-6">
-            <Link to="/PricingPlan">
+            <Link to="/create-organization">
               <button className="bg-white text-[#1e3a8a] px-8 py-4 rounded-full font-semibold text-lg transition-all duration-400 hover:bg-[#f0f4ff] hover:shadow-lg">
                 Get Started
               </button>
