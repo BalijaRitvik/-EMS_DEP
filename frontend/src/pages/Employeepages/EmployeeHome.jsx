@@ -27,7 +27,7 @@ const EmployeeHome = () => {
   const organization = useSelector((state) => state.auth.organization);
 
   const navItems = [
-    { label: "Home", icon: <Home />, path: "/EmployeeHome" },
+    { label: "Home", icon: <Home />, path: "/employee-dashboard" },
     { label: "Projects", icon: <Briefcase />, path: "/EmployeeHome/Works" },
     { label: "Reviews", icon: <MessageSquare />, path: "/EmployeeHome/reviews" },
     { label: "Leave Request", icon: <Calendar />, path: "/EmployeeHome/leave-request" },
