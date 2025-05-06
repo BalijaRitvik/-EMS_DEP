@@ -202,7 +202,7 @@ import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import UseGetAllEmployees from '../../hooks/UseGetAllEmployees';
 import UseGetDepartmentEmployees from '../../hooks/UseGetDepartmentEmployees';
-import { FaUser, FaTasks, FaArrowLeft, FaPlusCircle } from 'react-icons/fa';
+import { FaUser, FaClipboardList, FaArrowLeft, FaPlusCircle } from 'react-icons/fa';
 
 const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) => (
   <div className="w-full max-w-3xl mx-auto">
@@ -219,7 +219,7 @@ const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) =
     <div className="text-center mb-8">
       <div className="flex flex-col items-center space-y-4">
         <div className="bg-blue-100 p-6 rounded-full">
-          <FaTasks className="text-blue-700 text-4xl" />
+          <FaClipboardList className="text-blue-700 text-4xl" />
         </div>
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-blue-900">Organization Work Management</h1>
