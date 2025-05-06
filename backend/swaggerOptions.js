@@ -9,7 +9,7 @@ const options = {
       description: 'REST endpoints for your EMS backend',
     },
     servers: [
-      { url: 'http://localhost:8080', description: 'Local dev server' }
+      { url: 'https://ems-dep.onrender.com', description: 'Local dev server' }
     ],
     components: {
       securitySchemes: {
