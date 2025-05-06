@@ -277,7 +277,7 @@ const LeaveRequestTable = ({ leaveRecords, handleStatusUpdate, isManager, loadin
         <div className="w-full max-w-4xl mx-auto">
             <div className="flex items-center mb-6">
                 <button
-                    onClick={() => navigate("/AdminHome")}
+                    onClick={() => navigate("/adminHome")}
                     className="text-purple-700 hover:text-purple-900 flex items-center space-x-1 transition-colors duration-200"
                 >
                     <span>←</span>
@@ -401,7 +401,7 @@ const ApproveLeaveRequests = () => {
             const response = await axios.put(`${LEAVE_API_ENDPOINT}/update/${requestId}`, { status: newStatus, employeeId }, { withCredentials: true });
             console.log("📌 Update Status API Response:", response.data);
             toast.success(`Leave request ${newStatus.toLowerCase()} successfully`);
-            navigate("/AdminHome");
+            navigate("/adminHome");
         } catch (error) {
             console.error("Error updating leave status:", {
                 message: error.response?.data?.message || error.message,
