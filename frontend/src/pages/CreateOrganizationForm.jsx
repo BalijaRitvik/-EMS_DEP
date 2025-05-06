@@ -267,5 +267,3 @@ const CreateOrganizationForm = () => {
         </div>
     );
 };
-
-export default CreateOrganizationForm;
