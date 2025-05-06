@@ -129,7 +129,7 @@ const Home = () => {
                 Login as Employee
               </button>
             </Link>
-            <Link to="/PricingPlan">
+            <Link to="/create-organization">
               <button className="bg-[#1e3a8a] text-white px-6 py-3 rounded-full font-semibold text-sm transition-all duration-400 hover:bg-[#2b4db5] hover:scale-105">
                 Create Organization
               </button>
