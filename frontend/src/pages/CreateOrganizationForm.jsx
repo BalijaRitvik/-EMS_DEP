@@ -268,4 +268,4 @@ const CreateOrganizationForm = () => {
     );
 };
 
-export default CreateOrganizationForm
+export default CreateOrganizationForm;
