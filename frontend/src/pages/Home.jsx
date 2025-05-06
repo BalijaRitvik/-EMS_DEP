@@ -275,6 +275,9 @@ const Home = () => {
                 <p className="text-gray-400">
                   <i className="fas fa-map-marker-alt mr-2" /> 123 Corporate Way, Business City
                 </p>
+                <Link to="/SuperAdminLogin" className="flex items-center space-x-3">
+                    <h1 className="text-xl font-bold text-[#212529]">Admin</h1>
+                </Link>
               </div>
             </div>
           </div>
