@@ -77,7 +77,7 @@ const Mainbar = () => {
     if (roleLoading) return <p className="text-center text-gray-600 mt-6">Loading user role...</p>;
   
     return (
-      <section className="px-6 py-6">
+      <section className="px-6 py-6 pt-32">
         {isManager ? <ManagerView managerId={adminId} /> : <AdminView />}
       </section>
     );
