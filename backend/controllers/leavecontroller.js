@@ -283,7 +283,7 @@ export const getDepartmentLeaveRequests = async (req, res) => {
     if (!manager || manager.Employeestatus !== 'Manager') {
       return res.status(403).json({ message: "Requester must be a Manager" });
     }
-    const employees = await Employee.find({ organization: organizationId, department: manager.department }).select('_id');
+    const employees = await Employee.find({ organization: organizationId, department: manager.department,EmployeeStatus: }).select('_id');
     const employeeIds = employees.map(emp => emp._id);
     const leaveRecords = await LeaveRequest.find({ employee: { $in: employeeIds } }).populate('employee', 'empname mail');
     res.status(200).json(leaveRecords);
