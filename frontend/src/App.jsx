@@ -157,7 +157,7 @@ const router = createBrowserRouter([
     {
       path: '/SuperAdminLogin',
       // element: <SuperAdminLogin/>
-      element:<ProtectedRoute><SuperAdminLogin/></ProtectedRoute>
+      element:<SuperAdminLogin/>
     }
   
 ]);
