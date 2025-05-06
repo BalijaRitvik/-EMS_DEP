@@ -202,7 +202,6 @@ import { toast } from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import UseGetAllEmployees from '../../hooks/UseGetAllEmployees';
 import UseGetDepartmentEmployees from '../../hooks/UseGetDepartmentEmployees';
-import { FaUser, FaClipboardList, FaArrowLeft, FaPlusCircle } from 'react-icons/fa';
 
 const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) => (
   <div className="w-full max-w-3xl mx-auto">
@@ -211,7 +210,7 @@ const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) =
         onClick={() => navigate(-1)}
         className="text-blue-700 hover:text-blue-900 flex items-center space-x-1 transition-colors duration-200"
       >
-        <FaArrowLeft />
+        <span>←</span>
         <span>Back to Dashboard</span>
       </button>
     </div>
@@ -219,7 +218,7 @@ const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) =
     <div className="text-center mb-8">
       <div className="flex flex-col items-center space-y-4">
         <div className="bg-blue-100 p-6 rounded-full">
-          <FaClipboardList className="text-blue-700 text-4xl" />
+          <span className="text-4xl">📋</span>
         </div>
         <div className="space-y-1">
           <h1 className="text-2xl font-bold text-blue-900">Organization Work Management</h1>
@@ -238,7 +237,7 @@ const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) =
           <div key={employee._id} className="bg-white rounded-2xl shadow-lg p-6 border border-blue-100 flex items-center space-x-4">
             <div className="flex items-center space-x-3 flex-1">
               <div className="bg-blue-50 p-3 rounded-full">
-                <FaUser className="text-blue-500 text-xl" />
+                <span className="text-xl">👤</span>
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
@@ -262,7 +261,7 @@ const EmployeeTable = ({ employees, adminId, navigate, isManager, openModal }) =
           onClick={() => openModal(employees[0]._id)}
           className="w-full py-3 bg-green-500 text-white rounded-lg font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 transition-all flex items-center justify-center space-x-2"
         >
-          <FaPlusCircle />
+          <span>➕</span>
           <span>Assign New Task</span>
         </button>
       )}
