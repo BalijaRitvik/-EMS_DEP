@@ -173,7 +173,7 @@ const ApproveLeaveRequests = () => {
             const response = await axios.put(`${LEAVE_API_ENDPOINT}/update/${requestId}`, { status: newStatus, employeeId }, { withCredentials: true });
             console.log("📌 Update Status API Response:", response.data);
             toast.success(`Leave request ${newStatus.toLowerCase()} successfully`);
-            window.location.reload();
+            navigate("/AdminHome")
         } catch (error) {
             console.error("Error updating leave status:", {
                 message: error.response?.data?.message || error.message,
