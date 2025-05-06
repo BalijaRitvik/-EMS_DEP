@@ -1,0 +1,6 @@
+export const AUTH_API_ENDPOINT = import.meta.env.VITE_AUTH_API_ENDPOINT;
+export const EMPLOYEE_API_ENDPOINT = import.meta.env.VITE_EMPLOYEE_API_ENDPOINT;
+export const ADMIN_API_ENDPOINT = import.meta.env.VITE_ADMIN_API_ENDPOINT;
+export const LEAVE_API_ENDPOINT = import.meta.env.VITE_LEAVE_API_ENDPOINT;
+export const ATTENDANCE_API_ENDPOINT = import.meta.env.VITE_ATTENDANCE_API_ENDPOINT;
+export const DEPARTMENT_API_ENDPOINT = import.meta.env.VITE_DEPARTMENT_API_ENDPOINT;
